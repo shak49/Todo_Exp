@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import CoreData
 
 @main
 struct Todo_ExpApp: App {
+    let persistentContainer = CoreDataManager.shared.persistentContainer
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }
 }
