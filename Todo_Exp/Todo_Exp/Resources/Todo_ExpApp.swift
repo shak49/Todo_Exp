@@ -10,7 +10,7 @@ import CoreData
 
 @main
 struct Todo_ExpApp: App {
-    let persistentContainer = CoreDataManager.shared.persistentContainer
+    let persistentContainer = CoreDataStack.shared.persistentContainer
     
     var body: some Scene {
         WindowGroup {

@@ -14,7 +14,6 @@ struct TodoTaskListView: View {
     @State private var title: String = ""
     @State private var selectedPriority: Priority = .medium
     @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(entity: Task.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allTasks: FetchedResults<Task>
     
     var body: some View {
         NavigationView {
@@ -63,7 +62,7 @@ struct TodoTaskListView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let persistentContainer = CoreDataManager.shared.persistentContainer
+        let persistentContainer = CoreDataStack.shared.persistentContainer
         TodoTaskListView().environment(\.managedObjectContext, persistentContainer.viewContext)
     }
 }

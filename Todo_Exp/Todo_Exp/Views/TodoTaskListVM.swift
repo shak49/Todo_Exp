@@ -34,6 +34,7 @@ extension Priority {
 
 
 class TodoTaskListVM: ObservableObject, Identifiable {
+    // SHAK: Properties
     
     // SHAK: Functions
     func saveTask(title: String, selectedPriority: Priority, viewContext: NSManagedObjectContext) {

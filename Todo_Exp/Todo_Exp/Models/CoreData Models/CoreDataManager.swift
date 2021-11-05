@@ -2,25 +2,30 @@
 //  CoreDataManager.swift
 //  Todo_Exp
 //
-//  Created by Shak Feizi on 11/4/21.
+//  Created by Shak Feizi on 11/5/21.
 //
 
-import Foundation
 import CoreData
 
 
 class CoreDataManager {
     // SHAK: Properties
-    let persistentContainer: NSPersistentContainer
     static let shared: CoreDataManager = CoreDataManager()
+    var tasks: [Task] = []
+    private lazy var fetchRequest: NSFetchRequest<Task> = {
+        let request = NSFetchRequest<Task>(entityName: "Task")
+        request.predicate = NSPredicate(value: true)
+        return request
+    }()
     
-    // SHAK: Initializers
-    private init() {
-        persistentContainer = NSPersistentContainer(name: "CoreDataModel")
-        persistentContainer.loadPersistentStores { description, error in
-            if let error = error {
-                fatalError("Unable to initialize Core Data: \(error)")
-            }
-        }
+    // SHAK: Functions
+    func createTask(title: String, priority: String, isFavorite: Bool, dateCreated: Date) {
+        let newTask = Task(title: title, priority: priority, isFavorite: isFavorite, dateCreated: dateCreated)
+        tasks.append(newTask)
+        CoreDataStack.saveContext()
+        
+    }
+    func readTask() {
+        let task = try? CoreDataStack.context.fetch(fetchRequest)
     }
 }
