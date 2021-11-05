@@ -9,7 +9,7 @@ import CoreData
 
 
 extension Task {
-    @discardableResult convenience init(title: String, priority: String, isFavorite: Bool, dateCreated: Date, context: NSManagedObjectContext = CoreDataStack.context) {
+    @discardableResult convenience init(title: String, priority: String, isFavorite: Bool = false, dateCreated: Date, context: NSManagedObjectContext = CoreDataStack.context) {
         self.init(context: context)
         self.title = title
         self.priority = priority
@@ -17,3 +17,4 @@ extension Task {
         self.dateCreated = dateCreated
     }
 }
+

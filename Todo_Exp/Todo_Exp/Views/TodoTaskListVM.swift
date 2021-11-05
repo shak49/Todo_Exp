@@ -37,16 +37,8 @@ class TodoTaskListVM: ObservableObject, Identifiable {
     // SHAK: Properties
     
     // SHAK: Functions
-    func saveTask(title: String, selectedPriority: Priority, viewContext: NSManagedObjectContext) {
-        do {
-            let task = Task(context: viewContext)
-            task.title = title
-            task.priority = selectedPriority.rawValue
-            task.dateCreated = Date()
-            try viewContext.save()
-        } catch {
-            print(error.localizedDescription)
-        }
+    func saveTask(title: String, selectedPriority: Priority) {
+        CoreDataManager.shared.createTask(title: title, priority: selectedPriority.rawValue, dateCreated: Date())
     }
     
     func priorityStyle(_ value: String) -> Color {
@@ -63,24 +55,13 @@ class TodoTaskListVM: ObservableObject, Identifiable {
         }
     }
     
-    func updateTask(_ task: Task, viewContext: NSManagedObjectContext) {
-        task.isFavorite = !task.isFavorite
-        do {
-            try viewContext.save()
-        } catch {
-            print(error.localizedDescription)
-        }
+    func updateTask(_ task: Task) {
+        CoreDataManager.shared.updateTask(task: task)
     }
     
-    func deleteTask(at offsets: IndexSet) {
+    func deleteTask(at offsets: IndexSet, task: Task) {
         offsets.forEach { index in
-            let task = allTasks[index]
-            viewContext.delete(task)
-            do {
-                try viewContext.save()
-            } catch {
-                print(error.localizedDescription)
-            }
+            CoreDataManager.shared.deleteTask(task: task)
         }
     }
 }

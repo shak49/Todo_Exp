@@ -12,10 +12,10 @@ import CoreData
 enum CoreDataStack {
     // SHAK: Properties
     static let container: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Todo_Exp")
-        container.loadPersistentStores { description, error in
+        let container = NSPersistentContainer(name: "CoreDataModel")
+        container.loadPersistentStores { storeDescription, error in
             if let error = error {
-                fatalError("Error loading persistent store: \(error.localizedDescription)")
+                fatalError("Error loading persistent stores \(error.localizedDescription)")
             }
         }
         return container
@@ -28,7 +28,7 @@ enum CoreDataStack {
             do {
                 try context.save()
             } catch {
-                print("Error saving context: \(error)")
+                print("Error saving context \(error)")
             }
         }
     }

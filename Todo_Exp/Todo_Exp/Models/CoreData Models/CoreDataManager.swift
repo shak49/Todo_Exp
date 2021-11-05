@@ -19,14 +19,14 @@ class CoreDataManager {
     }()
     
     // SHAK: Functions
-    func createTask(title: String, priority: String, isFavorite: Bool, dateCreated: Date) {
-        let newTask = Task(title: title, priority: priority, isFavorite: isFavorite, dateCreated: dateCreated)
+    func createTask(title: String, priority: String, dateCreated: Date) {
+        let newTask = Task(title: title, priority: priority, dateCreated: dateCreated)
         tasks.append(newTask)
         CoreDataStack.saveContext()
     }
     
     func readTask() {
-        let task = try? CoreDataStack.context.fetch(fetchRequest)
+        _ = try? CoreDataStack.context.fetch(self.fetchRequest)
     }
     
     func updateTask(task: Task) {

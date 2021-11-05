@@ -13,7 +13,8 @@ struct TodoTaskListView: View {
     @StateObject private var todoListVM = TodoTaskListVM()
     @State private var title: String = ""
     @State private var selectedPriority: Priority = .medium
-    @Environment(\.managedObjectContext) private var viewContext
+    //@Environment(\.managedObjectContext) private var viewContext
+    //@FetchRequest(entity: Task.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var allTasks: FetchedResults<Task>
     
     var body: some View {
         NavigationView {
@@ -27,7 +28,7 @@ struct TodoTaskListView: View {
                 }
                 .pickerStyle(.segmented)
                 Button("Save") {
-                    todoListVM.saveTask(title: title, selectedPriority: selectedPriority, viewContext: viewContext)
+                    todoListVM.saveTask(title: title, selectedPriority: selectedPriority)
                 }
                 .padding(10)
                 .frame(maxWidth: .infinity)
@@ -35,7 +36,7 @@ struct TodoTaskListView: View {
                 .foregroundColor(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                 List {
-                    ForEach(allTasks) { task in
+                    ForEach(CoreDataManager.shared.tasks) { task in
                         HStack {
                             Circle()
                                 .fill(todoListVM.priorityStyle(task.priority!))
@@ -46,11 +47,11 @@ struct TodoTaskListView: View {
                             Image(systemName: task.isFavorite ? "heart.fill" : "heart")
                                 .foregroundColor(.red)
                                 .onTapGesture {
-                                    todoListVM.updateTask(task, viewContext: viewContext)
+                                    todoListVM.updateTask(task)
                                 }
                         }
                     }
-                    .onDelete(perform: todoListVM.deleteTask)
+                    //.onDelete(perform: todoListVM.deleteTask)
                 }
                 Spacer()
             }
@@ -62,7 +63,6 @@ struct TodoTaskListView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let persistentContainer = CoreDataStack.shared.persistentContainer
-        TodoTaskListView().environment(\.managedObjectContext, persistentContainer.viewContext)
+        TodoTaskListView()
     }
 }
