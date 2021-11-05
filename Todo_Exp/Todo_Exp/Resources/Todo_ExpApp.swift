@@ -14,7 +14,7 @@ struct Todo_ExpApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environment(\.managedObjectContext, persistentContainer.viewContext)
+            TodoTaskListView().environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }
 }
