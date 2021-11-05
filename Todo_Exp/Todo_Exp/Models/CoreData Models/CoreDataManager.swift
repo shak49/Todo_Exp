@@ -23,9 +23,18 @@ class CoreDataManager {
         let newTask = Task(title: title, priority: priority, isFavorite: isFavorite, dateCreated: dateCreated)
         tasks.append(newTask)
         CoreDataStack.saveContext()
-        
     }
+    
     func readTask() {
         let task = try? CoreDataStack.context.fetch(fetchRequest)
+    }
+    
+    func updateTask(task: Task) {
+        CoreDataStack.saveContext()
+    }
+    
+    func deleteTask(task: Task) {
+        CoreDataStack.context.delete(task)
+        CoreDataStack.saveContext()
     }
 }
