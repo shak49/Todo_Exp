@@ -37,10 +37,6 @@ class TodoTaskListVM: ObservableObject, Identifiable {
     // SHAK: Properties
     
     // SHAK: Functions
-    func saveTask(title: String, selectedPriority: Priority) {
-        CoreDataManager.shared.createTask(title: title, priority: selectedPriority.rawValue, dateCreated: Date())
-    }
-    
     func priorityStyle(_ value: String) -> Color {
         let priority = Priority(rawValue: value)
         switch priority {
@@ -53,6 +49,14 @@ class TodoTaskListVM: ObservableObject, Identifiable {
         default:
             return Color.black
         }
+    }
+    
+    func saveTask(title: String, selectedPriority: Priority) {
+        CoreDataManager.shared.createTask(title: title, priority: selectedPriority.rawValue, dateCreated: Date())
+    }
+    
+    func readTask() {
+        CoreDataManager.shared.readTask()
     }
     
     func updateTask(_ task: Task) {
