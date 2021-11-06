@@ -10,16 +10,14 @@ import CoreData
 
 
 enum Priority: String, Identifiable, CaseIterable {
+    case low = "Low"
+    case medium = "Medium"
+    case high = "High"
+    
     var id: UUID {
         return UUID()
     }
     
-    case low = "Low"
-    case medium = "Medium"
-    case high = "High"
-}
-
-extension Priority {
     var description: String {
         switch self {
         case .low:
@@ -52,20 +50,20 @@ class TodoTaskListVM: ObservableObject, Identifiable {
     }
     
     func saveTask(title: String, selectedPriority: Priority) {
-        CoreDataManager.shared.createTask(title: title, priority: selectedPriority.rawValue, dateCreated: Date())
+        
     }
     
     func readTask() {
-        CoreDataManager.shared.readTask()
+        
     }
     
     func updateTask(_ task: Task) {
-        CoreDataManager.shared.updateTask(task: task)
+        
     }
     
     func deleteTask(at offsets: IndexSet, task: Task) {
         offsets.forEach { index in
-            CoreDataManager.shared.deleteTask(task: task)
+            
         }
     }
 }
