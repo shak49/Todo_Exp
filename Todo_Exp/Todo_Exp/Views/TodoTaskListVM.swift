@@ -49,12 +49,16 @@ class TodoTaskListVM: ObservableObject, Identifiable {
         }
     }
     
-    func saveTask(title: String, selectedPriority: Priority) {
-        
-    }
-    
-    func readTask() {
-        
+    func saveTask(title: String, selectedPriority: Priority, context: NSManagedObjectContext) {
+        do {
+            let task = Task(context: context)
+            task.title = title
+            task.priority = selectedPriority.rawValue
+            task.dateCreated = Date()
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     func updateTask(_ task: Task) {

@@ -13,6 +13,8 @@ struct TodoTaskListView: View {
     @StateObject private var todoListVM = TodoTaskListVM()
     @State private var title: String = ""
     @State private var selectedPriority: Priority = .medium
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(entity: Task.entity(), sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) private var taskRequest: FetchedResults<Task>
     
     var body: some View {
         NavigationView {
@@ -26,12 +28,17 @@ struct TodoTaskListView: View {
                 }
                 .pickerStyle(.segmented)
                 Button("Save") {
-                    
+                    todoListVM.saveTask(title: title, selectedPriority: selectedPriority, context: viewContext)
                 }
                 .padding(10)
                 .frame(maxWidth: .infinity)
                 .background(Color.orange)
-                .border(.blue, width: 3)
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                List {
+                    ForEach(taskRequest) { task in
+                        Text(task.title ?? "")
+                    }
+                }
                 Spacer()
             }
             .padding()
