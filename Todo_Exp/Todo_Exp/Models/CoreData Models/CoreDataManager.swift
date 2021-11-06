@@ -11,30 +11,15 @@ import CoreData
 class CoreDataManager {
     // SHAK: Properties
     static let shared: CoreDataManager = CoreDataManager()
-    var tasks: [Task] = []
-    private lazy var fetchRequest: NSFetchRequest<Task> = {
-        let request = NSFetchRequest<Task>(entityName: "Task")
-        request.predicate = NSPredicate(value: true)
-        return request
-    }()
+    let persistentContainer: NSPersistentContainer
     
-    // SHAK: Functions
-    func createTask(title: String, priority: String, dateCreated: Date) {
-        let newTask = Task(title: title, priority: priority, dateCreated: dateCreated)
-        tasks.append(newTask)
-        CoreDataStack.saveContext()
+    private init() {
+        persistentContainer = NSPersistentContainer(name: "CoreDataModel")
+        persistentContainer.loadPersistentStores { description, error in
+            if let error = error {
+                fatalError("Unable to initialize Core Data \(error)")
+            }
+        }
     }
     
-    func readTask() {
-        _ = try? CoreDataStack.context.fetch(self.fetchRequest)
-    }
-    
-    func updateTask(task: Task) {
-        CoreDataStack.saveContext()
-    }
-    
-    func deleteTask(task: Task) {
-        CoreDataStack.context.delete(task)
-        CoreDataStack.saveContext()
-    }
 }

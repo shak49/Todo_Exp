@@ -10,9 +10,11 @@ import CoreData
 
 @main
 struct Todo_ExpApp: App {
+    let coreDataManager = CoreDataManager.shared
+    
     var body: some Scene {
         WindowGroup {
-            TodoTaskListView()
+            TodoTaskListView().environment(\.managedObjectContext, coreDataManager.persistentContainer.viewContext)
         }
     }
 }
