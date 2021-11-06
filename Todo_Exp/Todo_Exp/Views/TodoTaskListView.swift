@@ -32,12 +32,26 @@ struct TodoTaskListView: View {
                 }
                 .padding(10)
                 .frame(maxWidth: .infinity)
-                .background(Color.orange)
+                .background(Color.blue)
+                .foregroundColor(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 List {
                     ForEach(taskRequest) { task in
-                        Text(task.title ?? "")
+                        HStack {
+                            Circle()
+                                .fill(todoListVM.priorityStyle(task.priority!))
+                                .frame(width: 15, height: 15)
+                            Spacer().frame(width: 25)
+                            Text(task.title ?? "")
+                            Spacer()
+                            Image(systemName: task.isFavorite ? "heart.fill" : "heart")
+                                .foregroundColor(.red)
+                                .onTapGesture {
+                                    todoListVM.updateTask(task, context: viewContext)
+                                }
+                        }
                     }
+                    .onDelete(perform: delete)
                 }
                 Spacer()
             }
@@ -45,10 +59,19 @@ struct TodoTaskListView: View {
             .navigationTitle("All Tasks")
         }
     }
+    
+    func delete(offsets: IndexSet) {
+        offsets.forEach { index in
+            let task = taskRequest[index]
+            viewContext.delete(task)
+        }
+        todoListVM.deleteTask(taskRequest: taskRequest, context: viewContext)
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoTaskListView()
+        let container = CoreDataManager.shared.persistentContainer
+        TodoTaskListView().environment(\.managedObjectContext, container.viewContext)
     }
 }

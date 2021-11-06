@@ -61,13 +61,20 @@ class TodoTaskListVM: ObservableObject, Identifiable {
         }
     }
     
-    func updateTask(_ task: Task) {
-        
+    func updateTask(_ task: Task, context: NSManagedObjectContext) {
+        task.isFavorite = !task.isFavorite
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
-    func deleteTask(at offsets: IndexSet, task: Task) {
-        offsets.forEach { index in
-            
+    func deleteTask(taskRequest: FetchedResults<Task>, context: NSManagedObjectContext) {
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }
